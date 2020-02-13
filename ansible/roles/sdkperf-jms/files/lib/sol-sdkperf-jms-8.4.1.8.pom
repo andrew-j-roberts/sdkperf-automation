@@ -1,0 +1,247 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.solace.pubsub</groupId>
+        <artifactId>parent</artifactId>
+        <version>8.4.1.8</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+
+    <url>http://dev.solace.com/tech/java-api/</url>
+
+    <groupId>com.solace.pubsub</groupId>
+    <artifactId>sol-sdkperf-jms</artifactId>
+    <packaging>jar</packaging>
+    <name>Sdkperf JMS</name>
+    <description>Sdkperf JMS</description>
+
+    <dependencies>
+		<dependency>
+		  <groupId>org.apache.geronimo.specs</groupId>
+		  <artifactId>geronimo-jms_2.0_spec</artifactId>
+		  <version>1.0-alpha-2</version>
+		</dependency>		
+        <dependency>
+            <groupId>com.solacesystems</groupId>
+            <artifactId>sol-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.solace.pubsub</groupId>
+            <artifactId>sol-sdkperf</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.solacesystems</groupId>
+                    <artifactId>sol-util</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-jms-client</artifactId>
+            <version>0.23.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.22</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                	<execution>
+                		<id>copy-model</id>
+                		<phase>package</phase>
+                		<goals>
+                			<goal>copy</goal>
+                		</goals>
+                		<configuration>
+                			<artifactItems>
+                				<artifactItem>
+                				  	<groupId>org.apache.qpid</groupId>
+  									<artifactId>qpid-jms-client</artifactId>
+  									<version>0.11.1</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+                				  	<groupId>io.netty</groupId>
+  									<artifactId>netty-buffer</artifactId>
+  									<version>4.0.41.Final</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+                				  	<groupId>io.netty</groupId>
+  									<artifactId>netty-common</artifactId>
+  									<version>4.0.41.Final</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+                				  	<groupId>io.netty</groupId>
+  									<artifactId>netty-handler</artifactId>
+  									<version>4.0.41.Final</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+                				  	<groupId>io.netty</groupId>
+  									<artifactId>netty-transport</artifactId>
+  									<version>4.0.41.Final</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+  									<groupId>io.netty</groupId>
+  									<artifactId>netty-codec</artifactId>
+  									<version>4.0.41.Final</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+                				  	<groupId>io.netty</groupId>
+  									<artifactId>netty-codec-http</artifactId>
+  									<version>4.0.41.Final</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+                				  	<groupId>org.apache.qpid</groupId>
+  									<artifactId>proton-j</artifactId>
+  									<version>0.14.0</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+                				  	<groupId>org.slf4j</groupId>
+  									<artifactId>slf4j-api</artifactId>
+  									<version>1.7.21</version>
+  									<type>jar</type>
+                				</artifactItem>
+                				<artifactItem>
+  									<groupId>org.slf4j</groupId>
+  									<artifactId>slf4j-simple</artifactId>
+  									<version>1.7.22</version>
+  									<type>jar</type>
+                				</artifactItem>
+                			</artifactItems>
+                			<outputDirectory>target/dependency/jms1.1</outputDirectory>
+                		</configuration>
+                	</execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>README.txt</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prepare-assembly</id>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                        	<attach>false</attach>
+                            <descriptors>
+                                <descriptor>release-jms.xml</descriptor>
+								<descriptor>release-jmsamqp.xml</descriptor>
+								<descriptor>src-jms.xml</descriptor>
+								<descriptor>src-jmsamqp.xml</descriptor>
+								<descriptor>internal-jms1.1.xml</descriptor>
+								<descriptor>internal-jms2.0.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>assembly</id>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>release.xml</descriptor>
+                                <descriptor>internal.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>         
+                        <id>create-release-zip</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Process external release -->
+                                <mkdir dir="${project.build.directory}/dist/release"/>
+                                <copy todir="${project.build.directory}/dist/release">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="sol-sdkperf-jms*-release-*.zip"/>
+                                    </fileset>
+                                    <globmapper from="sol-sdkperf-jms-${project.version}-release*.zip" to="sdkperf*-${project.version}.zip"/>
+                                </copy>
+                                <copy todir="${project.build.directory}/dist/release">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="sol-sdkperf-jms*-src-*.zip"/>
+                                    </fileset>
+                                    <globmapper from="sol-sdkperf-jms-${project.version}-src*.zip" to="sdkperf*-${project.version}-src.zip"/>
+                                </copy>
+                                <checksum format="MD5SUM" fileext=".md5">
+                                    <fileset dir="${project.build.directory}/dist/release" includes="*.zip"/>
+                                </checksum>
+                                <unzip dest="${project.build.directory}/dist/release">
+                                    <fileset dir="${project.build.directory}/dist/release">
+                                        <include name="sdkperf-jms*-${project.version}.zip"/>
+                                    </fileset>
+                                </unzip>
+
+                                <!-- Process internal release -->
+                                <mkdir dir="${project.build.directory}/dist/internal"/>
+                                <copy todir="${project.build.directory}/dist/internal">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="sol-sdkperf-jms*-internal-*.zip"/>
+                                    </fileset>
+                                    <globmapper from="sol-sdkperf-jms-${project.version}-internal*.zip" to="sdkperf*-${project.version}.zip"/>
+                                </copy>
+                                <unzip dest="${project.build.directory}/dist/internal">
+                                    <fileset dir="${project.build.directory}/dist/internal">
+                                        <include name="sdkperf-jms*-${project.version}.zip"/>
+                                    </fileset>
+                                </unzip>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>templating-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

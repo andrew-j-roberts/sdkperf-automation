@@ -1,0 +1,7 @@
+---
+# defaults file for java_openjdk
+
+java_openjdk_version: 8
+# options: jre|jre-headless|jdk
+java_openjdk_package: jre-headless
+java_openjdk_use_ppa: true

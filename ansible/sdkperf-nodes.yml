@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: true
+  roles:
+    - ubuntu-bootstrap
+    - java-openjdk
+    - sdkperf-mqtt

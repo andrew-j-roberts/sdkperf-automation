@@ -1,0 +1,16 @@
+# Local .terraform directories
+.terraform
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# template files with your config info
+*.template
+
+# variable file
+variables.tf
+
+# formed tf files
+sdkperf-nodes.tf
+solace-broker-nodes.tf

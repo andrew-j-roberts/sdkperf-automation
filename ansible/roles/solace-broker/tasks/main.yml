@@ -1,0 +1,11 @@
+---
+# tasks file for solace-broker
+- name: Copy PubSubStandard_singleNode.yml to broker nodes
+  copy:
+    src: PubSubStandard_singleNode.yml
+    dest: ./
+    owner: ubuntu
+    mode: "0666"
+
+- name: Start 'er up
+  command: docker-compose -f PubSubStandard_singleNode.yml up -d

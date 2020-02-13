@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: true
+  roles:
+    - ubuntu-bootstrap
+    - docker
+    - solace-broker

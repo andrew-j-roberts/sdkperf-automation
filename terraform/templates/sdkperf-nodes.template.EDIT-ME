@@ -1,0 +1,41 @@
+####################################################################################################
+# INSTRUCTIONS:
+# (1) Customize these variables to your preference.  
+#     You must fill in: 
+#       * vpc_security_group_ids
+#       * subnet_id
+# (2) Make sure the account you're running terraform with has proper permissions in your AWS env
+# (3) Rename this file "sdkperf-nodes.template"
+####################################################################################################
+
+resource "aws_instance" "sdkperf-nodes" {
+
+  count = __NODE_COUNT__
+
+  ami                    = "ami-04b9e92b5572fa0d1" # Ubuntu
+  instance_type          = "m5.xlarge"
+  key_name               = "${var.aws_ssh_key_name}"
+  vpc_security_group_ids = [""]
+  subnet_id              = ""
+
+  tags = {
+    Name    = "mqtt-benchmarking-sdkperf-node-${count.index}"
+    Owner   = ""
+    Purpose = "MQTT benchmarking"
+    Days    = "7"
+  }
+
+  provisioner "remote-exec" {
+    inline = ["echo 'SSH ready to rock'"]
+
+    connection {
+      host        = "${self.public_ip}"
+      type        = "ssh"
+      user        = "${var.ssh_user}"
+      private_key = "${file("${var.private_key_path}")}"
+    }
+  }
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ${self.public_ip}, --private-key ${var.private_key_path} ../ansible/sdkperf-nodes.yml"
+  }
+}

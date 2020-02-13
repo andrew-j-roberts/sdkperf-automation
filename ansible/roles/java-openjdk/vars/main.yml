@@ -1,0 +1,6 @@
+---
+java_openjdk_jvm_path: "/usr/lib/jvm"
+java_openjdk_dir: "java-{{ java_openjdk_version }}-openjdk-amd64"
+java_openjdk_java_bin: "{{ java_openjdk_jvm_path }}/{{ java_openjdk_dir }}/jre/bin/java"
+java_openjdk_default_java_link: "{{ java_openjdk_jvm_path }}/default-java"
+java_openjdk_package_name: "openjdk-{{ java_openjdk_version }}-{{ java_openjdk_package }}"

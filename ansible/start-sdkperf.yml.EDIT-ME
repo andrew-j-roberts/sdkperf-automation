@@ -1,0 +1,42 @@
+---
+- hosts: all
+  remote_user: ubuntu
+
+  ##################################################
+  # SDKPerf Config Section
+  #
+  # INSTRUCTIONS:
+  #  (1) Fill out the following variables
+  #  (2) Run `ansible-playbook -i ansible/inventory/sdkperf-nodes.inventory ansible/start-sdkperf.yml`
+  #  (3) If you do not have a monitoring solution in place for your broker, you'll need to check the nohup.out file on each of the sdkperf nodes.
+  #  (4) Rename this file "start-sdkperf.yml"
+  ##################################################
+  vars:
+    # solace broker connection details
+    broker_ip:
+    broker_port:
+    broker_msg_vpn: default # you don't have to edit this unless you've created your own message vpn
+    client_username:
+    client_password:
+
+    # sdkperf settings
+    client_connection_count: # 1 || 10 || 100 || 1000 || etc...
+    msg_payload_size_bytes: # 100 || 1000 || 10000 || etc...
+    persistent: # true || false
+
+    # probably don't touch these
+    msg_number: 10000000000 # how many total messages to send, but we don't want our test to stop until we tell it to
+    msg_rate_per_second: 0 # 0 === full blast, which is the behavior we want if we're testing for msg/sec rates.  If you want to run controlled tests you can edit this
+
+  ##################################################
+
+  tasks:
+    - name: run QoS0 test
+      become: true
+      shell: nohup ./sdkperf-mqtt-8.4.1.8/sdkperf_mqtt.sh -cip={{ broker_ip }}:{{ broker_port }} -cu={{ client_username }}@{{ broker_msg_vpn }} -cp={{ client_password }} -cc={{ client_connection_count }} -stl=qos0 -ptl=qos0 -mn={{ msg_number }} -msa={{ msg_payload_size_bytes }} -mr={{ msg_rate_per_second }} -q &
+      when: persistent == false
+
+    - name: run QoS1 test
+      become: true
+      shell: nohup ./sdkperf-mqtt-8.4.1.8/sdkperf_mqtt.sh -cip={{ broker_ip }}:{{ broker_port }} -cu={{ client_username }}@{{ broker_msg_vpn }} -cp={{ client_password }} -cc={{ client_connection_count }} -stl=qos1 -ptl=qos1 -mn={{ msg_number }} -msa={{ msg_payload_size_bytes }} -mr={{ msg_rate_per_second }} -mpq=1 -msq=1 -q &
+      when: persistent == true

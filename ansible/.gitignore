@@ -1,0 +1,5 @@
+# has connection details
+start-sdkperf.yml
+
+# don't want ips to be stored
+*.inventory

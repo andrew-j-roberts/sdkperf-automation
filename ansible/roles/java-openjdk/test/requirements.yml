@@ -1,0 +1,2 @@
+- src: https://github.com/traveloka/ansible-apt_sources_list
+  name: apt_sources_list

@@ -1,0 +1,9 @@
+---
+- hosts: all
+  vars:
+    apt_cache_validity_time: 3600
+  roles:
+    - role: apt_sources_list
+    - role: ansible-java-openjdk
+      java_openjdk_version: 7
+      java_openjdk_package: jre

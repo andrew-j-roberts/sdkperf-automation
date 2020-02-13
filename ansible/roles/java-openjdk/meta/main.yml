@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Kevin Brebanov, Traveloka
+  description: Installs OpenJDK Java
+  company: Traveloka
+  license: BSD
+  min_ansible_version: 2.0
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+  categories:
+    - development
+  dependencies: []

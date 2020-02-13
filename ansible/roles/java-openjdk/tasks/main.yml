@@ -1,0 +1,34 @@
+---
+# tasks file for java_openjdk
+
+- block:
+    - name: add openjdk-r ppa
+      apt_repository:
+        repo: "ppa:openjdk-r/ppa"
+        state: present
+        update_cache: true
+      when: java_openjdk_use_ppa or java_openjdk_version == 8
+
+    - name: install openjdk
+      apt:
+        name: "{{ java_openjdk_package_name }}"
+        update_cache: true
+        state: present
+        cache_valid_time: "{{ apt_cache_valid_time|default(omit) }}"
+
+    - name: set openjdk as default java
+      alternatives:
+        name: java
+        path: "{{ java_openjdk_java_bin }}"
+
+    - name: add default-java symlink
+      file:
+        state: link
+        src: "{{ java_openjdk_dir }}"
+        dest: "{{ java_openjdk_default_java_link}}"
+
+  become: yes
+  become_method: sudo
+  remote_user: ubuntu
+  tags:
+    - java_openjdk

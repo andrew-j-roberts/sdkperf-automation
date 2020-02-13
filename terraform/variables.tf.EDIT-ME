@@ -1,0 +1,22 @@
+####################################################################################################
+# INSTRUCTIONS:
+# (1) Customize these variables to your perference
+# (2) Make sure the account you're running terraform with has proper permissions in your AWS env
+# (3) Rename this file "variables.tf"
+####################################################################################################
+
+# aws config
+variable "aws_region" {
+  default = ""
+}
+variable "aws_ssh_key_name" {
+  default = ""
+}
+
+# ssh config
+variable "private_key_path" {
+  default = ""
+}
+variable "ssh_user" {
+  default = "ubuntu"
+}
